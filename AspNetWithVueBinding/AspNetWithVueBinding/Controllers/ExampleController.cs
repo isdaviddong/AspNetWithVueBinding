@@ -20,8 +20,8 @@ namespace AspNetWithVueBinding.Controllers
                 //AssemblyLauncher
                 AssemblyLauncher assemblyLauncher = new AssemblyLauncher();
                 //執行指定的Method
-                var ret = assemblyLauncher.ExecuteCommand<TestClassA>(
-                    new TestClassA(),
+                var ret = assemblyLauncher.ExecuteCommand<BO.Health>(
+                    new BO.Health(),
                     MethodName,
                     Request.Content.ReadAsStringAsync().Result);
                 //回傳OK

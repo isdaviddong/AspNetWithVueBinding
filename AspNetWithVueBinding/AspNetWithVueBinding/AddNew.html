@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>AspNetWithVueBinding </title>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/vue.min.js"></script>
+    <script src="Scripts/isRockFx.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script>
+        var vm_StudentInfo; //儲存資料
+        var binding_StudentInfo; //Vue instance
+
+        //設定資料繫結
+        function SetBinding() {
+            //create vue instance
+            binding_StudentInfo = new Vue(
+                        {
+                            el: '#tableBody',
+                            data: { items: vm_StudentInfo },
+                        });
+        }
+
+        //從伺服器端取得資料
+        function AddNew() {
+            var para = { StudentName: $('#txbName').val(), Height: $('#txbHeight').val(), Weight: $('#txbWeight').val() };
+            ExecuteAPI('Example', 'AddNew', para,
+                //success
+                function (result) {
+                    if (result.isSuccess)
+                    {
+                        window.location.href = 'index.html';
+                    }
+                }
+             );
+        }
+
+        //透過binding清空UI上的資料
+        function Clear() {
+            binding_StudentInfo.items = undefined;
+        }
+
+        //ready
+        $(function () {
+            SetBinding();
+
+            $('#ButtonAddNew').click(AddNew);
+        });
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12" style="margin: 10px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    範例 : AspNetWithVueBinding (新增)
+                </div>
+                <div class="panel-body">
+                 <div class="form-group">
+                     <label>姓名:</label>
+                     <input class="form-control"  id="txbName" placeholder="請輸入姓名" />
+                     <label>身高:</label>
+                     <input class="form-control" id="txbHeight" placeholder="請輸入身高" />
+                     <label>體重:</label>
+                     <input class="form-control" id="txbWeight" placeholder="請輸入體重" />
+                     <br />
+                     <button type="button" id="ButtonAddNew" class="btn btn-primary">新增</button>
+                 </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

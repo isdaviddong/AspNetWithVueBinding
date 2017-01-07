@@ -24,6 +24,6 @@ C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWith
 C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\bin\System.Net.Http.Formatting.xml
 C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\bin\System.Web.Http.xml
 C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\bin\System.Web.Http.WebHost.xml
-C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\obj\Debug\AspNetWithVueBinding.csprojResolveAssemblyReference.cache
 C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\obj\Debug\AspNetWithVueBinding.dll
 C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\obj\Debug\AspNetWithVueBinding.pdb
+C:\Users\twdav\Source\Repos\AspNetWithVueBinding\AspNetWithVueBinding\AspNetWithVueBinding\obj\Debug\AspNetWithVueBinding.csprojResolveAssemblyReference.cache

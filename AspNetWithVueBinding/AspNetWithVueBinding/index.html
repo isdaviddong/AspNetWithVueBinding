@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>AspNetWithVueBinding </title>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/vue.min.js"></script>
+    <script src="Scripts/isRockFx.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script>
+        var vm_StudentInfo; //儲存資料
+        var binding_StudentInfo; //Vue instance
+
+        //設定資料繫結
+        function SetBinding() {
+            //create vue instance
+            binding_StudentInfo = new Vue(
+                        {
+                            el: '#tableBody',
+                            data: { items: vm_StudentInfo },
+                        });
+        }
+
+        //從伺服器端取得資料
+        function GetData() {
+            ExecuteAPI('Example', 'GetData', null,
+                //success
+                function (result) {
+                    binding_StudentInfo.items = result.Data;
+                }
+             );
+        }
+
+        //透過binding清空UI上的資料
+        function Clear() {
+            binding_StudentInfo.items = undefined;
+        }
+
+        //ready
+        $(function () {
+            SetBinding();
+
+            $('#ButtonGetData').click(GetData);
+            $('#ButtonClear').click(Clear);
+            $('#ButtonAddNew').click(function () { window.location.href = 'AddNew.html'; });
+        });
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12" style="margin: 10px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    範例 : AspNetWithVueBinding
+                </div>
+                <div class="panel-body">
+                    <button type="button" id="ButtonGetData" class="btn btn-primary">取得遠端資料</button>
+                    <button type="button" id="ButtonClear" class="btn btn-primary">清空UI</button>
+                </div>
+                <br />
+                <!-- 表格開始 -->
+                <div style="margin: 10px" id="tableBody">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 45px">姓名</th>
+                                <th style="min-width: 45px">身高</th>
+                                <th style="min-width: 45px">體重</th>
+                                <th style="min-width: 45px">BMI</th>
+                                <th style="min-width: 45px">備註</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in items">
+                                <td>
+                                    <span>{{item.StudentName}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.Height}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.Weight}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.BMIValue}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.Memo}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <button type="button" id="ButtonAddNew" class="btn btn-primary">新增</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
