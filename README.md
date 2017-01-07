@@ -1,1 +1,3 @@
 # AspNetWithVueBinding
+就只是一個簡單的範例
+透過WebAPI與框架撰寫的CRUD範例
