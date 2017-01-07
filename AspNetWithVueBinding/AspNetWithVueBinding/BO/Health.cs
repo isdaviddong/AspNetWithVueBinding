@@ -11,13 +11,14 @@ namespace AspNetWithVueBinding.BO
     /// </summary>
     public class StudentInfo
     {
+        public Guid guid { get; set; }
         public string StudentName { get; set; }
         public float Height { get; set; }
         public float Weight { get; set; }
         public float BMIValue { get; set; }
         public string Memo { get; set; }
     }
-     
+
 
     /// <summary>
     /// 給前端呼叫的API
@@ -37,11 +38,11 @@ namespace AspNetWithVueBinding.BO
                 {
                     //準備假資料
                     _StudentInfomation = new List<StudentInfo>();
-                    _StudentInfomation.Add(new StudentInfo { StudentName = "王曉明", Height = 170, Weight = 72 });
-                    _StudentInfomation.Add(new StudentInfo { StudentName = "張曉春", Height = 180, Weight = 75 });
-                    _StudentInfomation.Add(new StudentInfo { StudentName = "田豐盛", Height = 175, Weight = 60 });
-                    _StudentInfomation.Add(new StudentInfo { StudentName = "楊明山", Height = 165, Weight = 90 });
-                    _StudentInfomation.Add(new StudentInfo { StudentName = "令狐衝", Height = 172, Weight = 80 });
+                    _StudentInfomation.Add(new StudentInfo { StudentName = "王曉明", Height = 170, Weight = 72, guid = Guid.NewGuid() });
+                    _StudentInfomation.Add(new StudentInfo { StudentName = "張曉春", Height = 180, Weight = 75, guid = Guid.NewGuid() });
+                    _StudentInfomation.Add(new StudentInfo { StudentName = "田豐盛", Height = 175, Weight = 60, guid = Guid.NewGuid() });
+                    _StudentInfomation.Add(new StudentInfo { StudentName = "楊明山", Height = 165, Weight = 90, guid = Guid.NewGuid() });
+                    _StudentInfomation.Add(new StudentInfo { StudentName = "令狐衝", Height = 172, Weight = 80, guid = Guid.NewGuid() });
                 }
                 //計算BMI
                 foreach (var item in _StudentInfomation)
@@ -72,6 +73,28 @@ namespace AspNetWithVueBinding.BO
             };
         }
 
+
+        /// <summary>
+        /// 刪除一筆資料
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ExecuteCommandDefaultResult<List<StudentInfo>> Remove(Guid guid)
+        {
+            //找到資料
+            var ret = from c in StudentInfomation
+                      where c.guid == guid
+                      select c;
+            //如果有
+            if (ret.Count() > 0)
+            {
+                //移除
+                StudentInfomation.Remove(ret.FirstOrDefault());
+            }
+
+            return GetData();
+        }
+
         /// <summary>
         /// 新增一筆資料
         /// </summary>
@@ -79,6 +102,7 @@ namespace AspNetWithVueBinding.BO
         /// <returns></returns>
         public ExecuteCommandDefaultResult<List<StudentInfo>> AddNew(StudentInfo StudentInfo)
         {
+            StudentInfo.guid = Guid.NewGuid();
             StudentInfomation.Add(StudentInfo);
 
             return GetData();

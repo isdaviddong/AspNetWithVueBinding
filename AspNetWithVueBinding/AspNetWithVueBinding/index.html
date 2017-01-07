@@ -5,6 +5,8 @@
     <script src="Scripts/jquery-1.9.1.min.js"></script>
     <script src="Scripts/vue.min.js"></script>
     <script src="Scripts/isRockFx.js"></script>
+    <script src="Scripts/toastr.min.js"></script>
+    <link href="Content/toastr.min.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <script>
         var vm_StudentInfo; //儲存資料
@@ -17,7 +19,31 @@
                         {
                             el: '#tableBody',
                             data: { items: vm_StudentInfo },
+                            methods: {
+                                remove: function (item) {
+                                    if (confirm('確定要刪除[' + item.StudentName + ']?')) {
+                                        Remove(item);
+                                    }
+                                },
+                                edit: function (item) {
+                                    toastr["error"]("還沒實作啦...", "提示");
+                                }
+                            }
                         });
+        }
+
+        //移除一筆資料
+        function Remove(item) {
+            var para = item.guid;
+            ExecuteAPI('Example', 'Remove', para,
+                //success
+                function (result) {
+                    if (result.isSuccess) {
+                        //重新取得資料
+                        GetData();
+                    }
+                }
+             );
         }
 
         //從伺服器端取得資料
@@ -42,19 +68,21 @@
             $('#ButtonGetData').click(GetData);
             $('#ButtonClear').click(Clear);
             $('#ButtonAddNew').click(function () { window.location.href = 'AddNew.html'; });
+
+            toastr["info"]("請按下取得遠端資料鈕，來取得資料喔...", "貼心提醒")
         });
     </script>
 </head>
 <body>
     <div class="row">
-        <div class="col-md-12" style="margin: 10px">
+        <div class="col-md-9" style="margin: 10px">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    範例 : AspNetWithVueBinding
+                    範例 : AspNetWithVueBinding (資料顯示、刪除)
                 </div>
                 <div class="panel-body">
                     <button type="button" id="ButtonGetData" class="btn btn-primary">取得遠端資料</button>
-                    <button type="button" id="ButtonClear" class="btn btn-primary">清空UI</button>
+                    <button type="button" id="ButtonClear" class="btn btn-primary">清空UI(測試用)</button>
                 </div>
                 <br />
                 <!-- 表格開始 -->
@@ -62,6 +90,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th style="min-width: 45px">Action</th>
                                 <th style="min-width: 45px">姓名</th>
                                 <th style="min-width: 45px">身高</th>
                                 <th style="min-width: 45px">體重</th>
@@ -71,6 +100,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="item in items">
+                                <td>
+                                    <button class="btn  btn-outline btn-primary btn-xs" v-on:click="edit(item)">編輯</button>
+                                    <button class="btn  btn-outline btn-primary btn-xs" v-on:click="remove(item)">刪除</button>
+                                </td>
                                 <td>
                                     <span>{{item.StudentName}}</span>
                                 </td>
@@ -91,7 +124,6 @@
                     </table>
                     <br />
                     <button type="button" id="ButtonAddNew" class="btn btn-primary">新增</button>
-
                 </div>
             </div>
         </div>
