@@ -4,8 +4,7 @@
 <br/>
 透過WebAPI與框架撰寫的CRUD範例
 <br/>  
-Video:
-<iframe width="640" height="360" src="https://www.youtube.com/embed/Q-Kbdu48Unw" frameborder="0" allowfullscreen></iframe>
+Video: https://www.youtube.com/embed/Q-Kbdu48Unw
 <br/>  
 這是一個使用純HTML+WebAPI做的SPA CRUD範例。你會看到，新增和修改是在同一個頁面(AddNewOrUpdate.html)完成的，而資料列表與刪除則是在index.html)，所有的資料處理都拉到BO內開發，WebAPI單純就被視為服務層，底下連結是Source與參考資料，過幾天我再抽空整理這個範例的完整說明。
 <br/> 
