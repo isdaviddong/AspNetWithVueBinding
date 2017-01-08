@@ -7,7 +7,7 @@ using isRock.Framework.WebAPI;
 namespace AspNetWithVueBinding.BO
 {
     /// <summary>
-    /// 一筆學身資料
+    /// 一筆學生資料
     /// </summary>
     public class StudentInfo
     {
@@ -69,7 +69,7 @@ namespace AspNetWithVueBinding.BO
             return new ExecuteCommandDefaultResult<List<StudentInfo>>()
             {
                 isSuccess = true,
-                Data = StudentInfomation
+                Data = StudentInfomation //將記憶體(模擬資料庫)中的資料回傳
             };
         }
 
@@ -100,11 +100,18 @@ namespace AspNetWithVueBinding.BO
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public ExecuteCommandDefaultResult<List<StudentInfo>> AddNew(StudentInfo StudentInfo)
+        public ExecuteCommandDefaultResult<List<StudentInfo>> AddNewOrUpdate(StudentInfo StudentInfo)
         {
-            StudentInfo.guid = Guid.NewGuid();
-            StudentInfomation.Add(StudentInfo);
-
+            if (StudentInfo.guid == null)
+            {
+                //新增
+                StudentInfo.guid = Guid.NewGuid();
+                StudentInfomation.Add(StudentInfo);
+            }
+            else
+            {
+                //更新
+            }
             return GetData();
         }
     }

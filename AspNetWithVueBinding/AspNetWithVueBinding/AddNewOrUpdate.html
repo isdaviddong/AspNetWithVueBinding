@@ -6,28 +6,30 @@
     <script src="Scripts/vue.min.js"></script>
     <script src="Scripts/isRockFx.js"></script>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="Scripts/utility.js"></script>
     <script>
-        Vue.config.debug = true;
-        Vue.config.devtools = true;
+        Vue.config.debug = true;        //vue debug mode
+        Vue.config.devtools = true;     //vue debug mode
+        var guid = getQueryString('guid');  //取得guid
 
-        var vm_StudentRec= { StudentName: '', Height: 0, Weight: 0 }; //儲存資料的前端object
-        var binding_StudentRec; //Vue instance
+        var vd_StudentRec= { StudentName: '', Height: 0, Weight: 0 }; //儲存資料的前端object
+        var vm_StudentRec; //Vue instance
 
         //設定資料繫結
         function SetBinding() {
             //create vue instance
-            binding_StudentRec = new Vue(
+            vm_StudentRec = new Vue(
                         {
                             el: '#Form_StudentRec',
-                            data: { rec: vm_StudentRec },
+                            data: { rec: vd_StudentRec },
                         });
         }
 
         //新增一筆資料
-        function AddNew() {
-            var para = vm_StudentRec;
+        function AddNewOrUpdate() {
+            var para = vd_StudentRec;
 
-            ExecuteAPI('Example', 'AddNew', para,
+            ExecuteAPI('Example', 'AddNewOrUpdate', para,
                 //success
                 function (result) {
                     if (result.isSuccess)
@@ -40,15 +42,37 @@
 
         //透過binding清空UI上的資料
         function Clear() {
-            vm_StudentRec = { StudentName: '', Height: 0, Weight: 0 };
-            binding_StudentRec.rec = vm_StudentRec;
+            vd_StudentRec = { StudentName: '', Height: 0, Weight: 0 };
+            vm_StudentRec.rec = vd_StudentRec;
+        }
+
+        //依照QueryString guid 載入特定資料
+        function LoadData(guid) {
+            var para = guid;
+            ExecuteAPI('Example', 'LoadData', para,
+              //success
+              function (result) {
+                  if (result.isSuccess) {
+                      vd_StudentRec = result.Data;
+                      vm_StudentRec.rec = vd_StudentRec;
+                  }
+              }
+           );
         }
 
         //ready
         $(function () {
-            SetBinding();
+            SetBinding();   //設定繫結
 
-            $('#ButtonAddNew').click(AddNew);
+            //如果有QueryString則載入特定資料
+            if (guid != null)
+            {
+                //依照QueryString guid 載入特定資料
+                LoadData(guid); 
+            }
+
+            //Button Event Hook
+            $('#ButtonAddNewOrUpdate').click(AddNewOrUpdate);
             $('#ButtonClear').click(Clear);
         });
     </script>
@@ -58,10 +82,11 @@
         <div class="col-md-12" style="margin: 10px">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    範例 : AspNetWithVueBinding (新增)
+                    範例 : AspNetWithVueBinding (新增/更新)
                 </div>
                 <div class="panel-body">
                  <div class="form-group" id="Form_StudentRec">
+                     <label>資料編號: {{rec.guid}}</label>
                      <label>姓名:</label>
                      <input class="form-control"  id="txbName" v-model="rec.StudentName" placeholder="請輸入姓名" />
                      <label>身高:</label>
@@ -69,7 +94,7 @@
                      <label>體重:</label>
                      <input class="form-control" id="txbWeight" v-model="rec.Weight" placeholder="請輸入體重" />
                      <br />
-                     <button type="button" id="ButtonAddNew" class="btn btn-primary">新增</button>
+                     <button type="button" id="ButtonAddNewOrUpdate" class="btn btn-primary">新增/更新</button>
                      <button type="button" id="ButtonClear" class="btn btn-primary">清空</button>
                  </div>
                 </div>

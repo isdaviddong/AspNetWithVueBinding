@@ -9,16 +9,16 @@
     <link href="Content/toastr.min.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <script>
-        var vm_StudentInfo; //儲存資料
-        var binding_StudentInfo; //Vue instance
+        var vd_StudentInfo; //儲存資料
+        var vm_StudentInfo; //Vue instance
 
         //設定資料繫結
         function SetBinding() {
             //create vue instance
-            binding_StudentInfo = new Vue(
+            vm_StudentInfo = new Vue(
                         {
                             el: '#tableBody',
-                            data: { items: vm_StudentInfo },
+                            data: { items: vd_StudentInfo },
                             methods: {
                                 remove: function (item) {
                                     if (confirm('確定要刪除[' + item.StudentName + ']?')) {
@@ -26,7 +26,7 @@
                                     }
                                 },
                                 edit: function (item) {
-                                    toastr["error"]("還沒實作啦...", "提示");
+                                    window.location.href = 'AddNewOrUpdate.html?guid=' + item.guid;
                                 }
                             }
                         });
@@ -51,14 +51,14 @@
             ExecuteAPI('Example', 'GetData', null,
                 //success
                 function (result) {
-                    binding_StudentInfo.items = result.Data;
+                    vm_StudentInfo.items = result.Data;
                 }
              );
         }
 
         //透過binding清空UI上的資料
         function Clear() {
-            binding_StudentInfo.items = undefined;
+            vm_StudentInfo.items = undefined;
         }
 
         //ready
