@@ -96,13 +96,14 @@ namespace AspNetWithVueBinding.BO
         }
 
         /// <summary>
-        /// 新增一筆資料
+        /// 新增或更新一筆資料
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
         public ExecuteCommandDefaultResult<List<StudentInfo>> AddNewOrUpdate(StudentInfo StudentInfo)
         {
-            if (StudentInfo.guid == null)
+            //判斷guid決定新增或更新
+            if (StudentInfo.guid == null || StudentInfo.guid == Guid.Empty)
             {
                 //新增
                 StudentInfo.guid = Guid.NewGuid();
@@ -110,9 +111,42 @@ namespace AspNetWithVueBinding.BO
             }
             else
             {
+                //找到特定編號那筆資料
+                var ret = from c in StudentInfomation
+                          where c.guid == StudentInfo.guid
+                          select c;
                 //更新
+                if (ret.Count() > 0)
+                {
+                    ret.FirstOrDefault().StudentName = StudentInfo.StudentName;
+                    ret.FirstOrDefault().Height = StudentInfo.Height;
+                    ret.FirstOrDefault().Weight = StudentInfo.Weight;
+                }
             }
+            //回傳所有資料(其實前端沒用到)
             return GetData();
+        }
+
+        /// <summary>
+        /// 依照guid取得一筆特定資料
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ExecuteCommandDefaultResult<StudentInfo> LoadData(Guid guid)
+        {
+            //找到特定編號那筆資料
+            var ret = from c in StudentInfomation
+                      where c.guid == guid
+                      select c;
+
+            if (ret.Count() <= 0)
+                throw new Exception($"指定的資料{guid}不存在");
+            //回傳該筆資料
+            return new ExecuteCommandDefaultResult<StudentInfo>()
+            {
+                isSuccess = true,
+                Data = ret.FirstOrDefault()
+            };
         }
     }
 }
